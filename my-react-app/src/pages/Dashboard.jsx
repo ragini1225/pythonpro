@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Motion } from 'framer-motion';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Code, 
-  Clock, 
-  Award, 
-  Users, 
+import React, { useState, useEffect } from "react";
+
+import { motion } from "framer-motion";
+import {
+  BarChart3,
+  TrendingUp,
+  Code,
+  Clock,
+  Award,
+  Users,
   GitFork,
   Star,
   Activity,
   Calendar,
   Target,
-  Zap
-} from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import { useAuth } from '../contexts/AuthContext';
-import { db } from '../lib/database';
+  Zap,
+} from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { useAuth } from "../contexts/AuthContext";
+import { db } from "../lib/database";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -46,15 +47,22 @@ const Dashboard = () => {
       setProjects(projectsData?.slice(0, 5) || []);
 
       // Load recent executions
-      const { data: executionsData } = await db.executions.getAnalytics(user.id);
+      const { data: executionsData } = await db.executions.getAnalytics(
+        user.id
+      );
       setRecentExecutions(executionsData?.slice(0, 10) || []);
 
       // Load user achievements
-      const { data: achievementsData } = await db.achievements.getUserAchievements(user.id);
+      const { data: achievementsData } =
+        await db.achievements.getUserAchievements(user.id);
       setAchievements(achievementsData || []);
 
       // Calculate stats
-      const totalPoints = achievementsData?.reduce((sum, ua) => sum + (ua.achievement?.points || 0), 0) || 0;
+      const totalPoints =
+        achievementsData?.reduce(
+          (sum, ua) => sum + (ua.achievement?.points || 0),
+          0
+        ) || 0;
       setStats({
         totalProjects: projectsData?.length || 0,
         totalExecutions: executionsData?.length || 0,
@@ -62,7 +70,7 @@ const Dashboard = () => {
         totalPoints,
       });
     } catch (error) {
-      console.error('Failed to load dashboard data:', error);
+      console.error("Failed to load dashboard data:", error);
     } finally {
       setLoading(false);
     }
@@ -74,7 +82,9 @@ const Dashboard = () => {
       animate={{ opacity: 1, y: 0 }}
       className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6 text-center"
     >
-      <div className={`inline-flex p-3 rounded-xl bg-${color}-500/10 text-${color}-400 mb-3`}>
+      <div
+        className={`inline-flex p-3 rounded-xl bg-${color}-500/10 text-${color}-400 mb-3`}
+      >
         {icon}
       </div>
       <div className="text-2xl font-bold text-white mb-1">{value}</div>
@@ -86,7 +96,9 @@ const Dashboard = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Please sign in to view your dashboard</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Please sign in to view your dashboard
+          </h2>
         </div>
       </div>
     );
@@ -153,7 +165,9 @@ const Dashboard = () => {
           >
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-white">Recent Projects</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Recent Projects
+                </h3>
                 <button className="text-emerald-400 hover:text-emerald-300 text-sm transition-colors">
                   View All
                 </button>
@@ -172,7 +186,9 @@ const Dashboard = () => {
                         <Code className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-white">{project.title}</h4>
+                        <h4 className="font-medium text-white">
+                          {project.title}
+                        </h4>
                         <p className="text-sm text-slate-400 line-clamp-1">
                           {project.description}
                         </p>
@@ -187,7 +203,11 @@ const Dashboard = () => {
                         <GitFork className="w-3 h-3" />
                         <span>{project.fork_count}</span>
                       </div>
-                      <span>{formatDistanceToNow(new Date(project.updated_at), { addSuffix: true })}</span>
+                      <span>
+                        {formatDistanceToNow(new Date(project.updated_at), {
+                          addSuffix: true,
+                        })}
+                      </span>
                     </div>
                   </motion.div>
                 ))}
@@ -203,7 +223,9 @@ const Dashboard = () => {
           >
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6 mb-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-white">Recent Achievements</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Recent Achievements
+                </h3>
                 <Award className="w-5 h-5 text-emerald-400" />
               </div>
 
@@ -216,7 +238,7 @@ const Dashboard = () => {
                     className="flex items-center space-x-3 p-3 bg-slate-700/30 rounded-lg"
                   >
                     <div className="text-2xl">
-                      {userAchievement.achievement?.icon || '🏆'}
+                      {userAchievement.achievement?.icon || "🏆"}
                     </div>
                     <div className="flex-1">
                       <h4 className="font-medium text-white text-sm">
@@ -227,7 +249,10 @@ const Dashboard = () => {
                       </p>
                     </div>
                     <div className="text-xs text-slate-500">
-                      {formatDistanceToNow(new Date(userAchievement.earned_at), { addSuffix: true })}
+                      {formatDistanceToNow(
+                        new Date(userAchievement.earned_at),
+                        { addSuffix: true }
+                      )}
                     </div>
                   </motion.div>
                 ))}
@@ -244,26 +269,43 @@ const Dashboard = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-400">This Week</span>
-                  <span className="text-sm font-medium text-white">24 executions</span>
+                  <span className="text-sm font-medium text-white">
+                    24 executions
+                  </span>
                 </div>
                 <div className="w-full bg-slate-700/50 rounded-full h-2">
-                  <div className="bg-emerald-500 h-2 rounded-full" style={{ width: '75%' }}></div>
+                  <div
+                    className="bg-emerald-500 h-2 rounded-full"
+                    style={{ width: "75%" }}
+                  ></div>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-400">This Month</span>
-                  <span className="text-sm font-medium text-white">156 executions</span>
+                  <span className="text-sm font-medium text-white">
+                    156 executions
+                  </span>
                 </div>
                 <div className="w-full bg-slate-700/50 rounded-full h-2">
-                  <div className="bg-blue-500 h-2 rounded-full" style={{ width: '60%' }}></div>
+                  <div
+                    className="bg-blue-500 h-2 rounded-full"
+                    style={{ width: "60%" }}
+                  ></div>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-400">Learning Progress</span>
-                  <span className="text-sm font-medium text-white">8/12 tutorials</span>
+                  <span className="text-sm text-slate-400">
+                    Learning Progress
+                  </span>
+                  <span className="text-sm font-medium text-white">
+                    8/12 tutorials
+                  </span>
                 </div>
                 <div className="w-full bg-slate-700/50 rounded-full h-2">
-                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: '67%' }}></div>
+                  <div
+                    className="bg-purple-500 h-2 rounded-full"
+                    style={{ width: "67%" }}
+                  ></div>
                 </div>
               </div>
             </div>
@@ -279,7 +321,9 @@ const Dashboard = () => {
         >
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-white">Recent Activity</h3>
+              <h3 className="text-xl font-semibold text-white">
+                Recent Activity
+              </h3>
               <Clock className="w-5 h-5 text-emerald-400" />
             </div>
 
@@ -290,22 +334,27 @@ const Dashboard = () => {
                   className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg"
                 >
                   <div className="flex items-center space-x-4">
-                    <div className={`p-2 rounded-lg ${
-                      execution.success 
-                        ? 'bg-emerald-500/10 text-emerald-400' 
-                        : 'bg-red-500/10 text-red-400'
-                    }`}>
+                    <div
+                      className={`p-2 rounded-lg ${
+                        execution.success
+                          ? "bg-emerald-500/10 text-emerald-400"
+                          : "bg-red-500/10 text-red-400"
+                      }`}
+                    >
                       <Zap className="w-4 h-4" />
                     </div>
                     <div>
                       <h4 className="font-medium text-white">Code Execution</h4>
                       <p className="text-sm text-slate-400">
-                        {execution.success ? 'Successful' : 'Failed'} • {execution.execution_time}ms
+                        {execution.success ? "Successful" : "Failed"} •{" "}
+                        {execution.execution_time}ms
                       </p>
                     </div>
                   </div>
                   <div className="text-sm text-slate-500">
-                    {formatDistanceToNow(new Date(execution.created_at), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(execution.created_at), {
+                      addSuffix: true,
+                    })}
                   </div>
                 </div>
               ))}

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Motion, AnimatePresence } from 'framer-motion';
-import { 
-  Play, 
-  Save, 
-  Share2, 
-  Download, 
-  Zap, 
-  Clock, 
-  CheckCircle, 
+import React, { useState, useEffect } from "react";
+
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Play,
+  Save,
+  Share2,
+  Download,
+  Zap,
+  Clock,
+  CheckCircle,
   Settings,
   Maximize2,
   Minimize2,
@@ -21,16 +22,16 @@ import {
   Brain,
   AlertTriangle,
   Lightbulb,
-  BarChart3
-} from 'lucide-react';
-import toast from 'react-hot-toast';
-import MonacoEditor from '../components/MonacoEditor.jsx';
-import OutputTerminal from '../components/OutputTerminal.jsx';
-import ExampleSelector from '../components/ExampleSelector.jsx';
-import { executePythonCode } from '../utils/pythonExecutor';
-import { useAuth } from '../contexts/AuthContext';
-import { db } from '../lib/database';
-import AIChatbot from '../components/AIChatbot';
+  BarChart3,
+} from "lucide-react";
+import toast from "react-hot-toast";
+import MonacoEditor from "../components/MonacoEditor.jsx";
+import OutputTerminal from "../components/OutputTerminal.jsx";
+import ExampleSelector from "../components/ExampleSelector.jsx";
+import { executePythonCode } from "../utils/pythonExecutor.js";
+import { useAuth } from "../contexts/AuthContext.jsx";
+import { db } from "../lib/database";
+import AIChatbot from "../components/AIChatbot";
 
 const initialCode = `# Welcome to PyCode Pro! 🐍
 # Your journey into Python programming starts here!
@@ -224,17 +225,17 @@ const Playground = () => {
   const { user } = useAuth();
   const [code, setCode] = useState(initialCode);
   const [executionResult, setExecutionResult] = useState({
-    output: '',
-    error: '',
+    output: "",
+    error: "",
     executionTime: 0,
     memoryUsage: 0,
     linesOfCode: 0,
     complexity: 0,
     warnings: [],
-    suggestions: []
+    suggestions: [],
   });
   const [isExecuting, setIsExecuting] = useState(false);
-  const [projectTitle, setProjectTitle] = useState('Untitled Project');
+  const [projectTitle, setProjectTitle] = useState("Untitled Project");
   const [isSaving, setIsSaving] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showExamples, setShowExamples] = useState(true);
@@ -248,18 +249,18 @@ const Playground = () => {
     {
       name: "👋 Welcome Guide",
       code: welcomeCode,
-      description: "Perfect for beginners - learn the basics step by step"
+      description: "Perfect for beginners - learn the basics step by step",
     },
     {
       name: "🎮 Fun Examples",
       code: funExamples,
-      description: "Interactive examples with patterns, quizzes, and more"
+      description: "Interactive examples with patterns, quizzes, and more",
     },
     {
       name: "🚀 Original Demo",
       code: initialCode,
-      description: "The original welcome code with advanced features"
-    }
+      description: "The original welcome code with advanced features",
+    },
   ];
 
   // Animation variants
@@ -269,9 +270,9 @@ const Playground = () => {
       opacity: 1,
       transition: {
         duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -281,50 +282,50 @@ const Playground = () => {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   const buttonVariants = {
     idle: { scale: 1 },
-    hover: { 
+    hover: {
       scale: 1.05,
-      transition: { duration: 0.2, ease: "easeInOut" }
+      transition: { duration: 0.2, ease: "easeInOut" },
     },
-    tap: { 
+    tap: {
       scale: 0.95,
-      transition: { duration: 0.1 }
-    }
+      transition: { duration: 0.1 },
+    },
   };
 
   const executeButtonVariants = {
-    idle: { 
+    idle: {
       scale: 1,
-      boxShadow: "0 4px 20px rgba(16, 185, 129, 0.25)"
+      boxShadow: "0 4px 20px rgba(16, 185, 129, 0.25)",
     },
-    hover: { 
+    hover: {
       scale: 1.05,
       boxShadow: "0 8px 30px rgba(16, 185, 129, 0.4)",
-      transition: { duration: 0.3 }
+      transition: { duration: 0.3 },
     },
-    tap: { 
+    tap: {
       scale: 0.95,
-      transition: { duration: 0.1 }
+      transition: { duration: 0.1 },
     },
     executing: {
       scale: [1, 1.02, 1],
       boxShadow: [
         "0 4px 20px rgba(16, 185, 129, 0.25)",
         "0 8px 30px rgba(16, 185, 129, 0.6)",
-        "0 4px 20px rgba(16, 185, 129, 0.25)"
+        "0 4px 20px rgba(16, 185, 129, 0.25)",
       ],
       transition: {
         duration: 2,
         repeat: Infinity,
-        ease: "easeInOut"
-      }
-    }
+        ease: "easeInOut",
+      },
+    },
   };
 
   const statsVariants = {
@@ -334,29 +335,29 @@ const Playground = () => {
       scale: 1,
       transition: {
         duration: 0.5,
-        ease: "backOut"
-      }
-    }
+        ease: "backOut",
+      },
+    },
   };
 
   const handleExecute = async () => {
     setIsExecuting(true);
     setExecutionResult({
-      output: '',
-      error: '',
+      output: "",
+      error: "",
       executionTime: 0,
       memoryUsage: 0,
       linesOfCode: 0,
       complexity: 0,
       warnings: [],
-      suggestions: []
+      suggestions: [],
     });
 
     try {
       const result = await executePythonCode(code);
       setExecutionResult(result);
-      setExecutionCount(prev => prev + 1);
-      
+      setExecutionCount((prev) => prev + 1);
+
       // Save execution to database
       if (user) {
         await db.executions.create({
@@ -369,44 +370,48 @@ const Playground = () => {
           memory_usage: result.memoryUsage,
           lines_of_code: result.linesOfCode,
           complexity_score: result.complexity,
-          success: !result.error
+          success: !result.error,
         });
       }
-      
+
       if (result.error) {
-        toast.error('Execution failed', {
-          icon: '❌',
+        toast.error("Execution failed", {
+          icon: "❌",
           style: {
-            background: '#1e293b',
-            color: '#f1f5f9',
-            border: '1px solid #ef4444',
-          }
+            background: "#1e293b",
+            color: "#f1f5f9",
+            border: "1px solid #ef4444",
+          },
         });
       } else {
         // Show suggestions if any
         if (result.suggestions.length > 0) {
-          toast.success(`Code executed! ${result.suggestions.length} suggestions available`, {
-            icon: '💡',
-            style: {
-              background: '#1e293b',
-              color: '#f1f5f9',
-              border: '1px solid #10b981',
+          toast.success(
+            `Code executed! ${result.suggestions.length} suggestions available`,
+            {
+              icon: "💡",
+              style: {
+                background: "#1e293b",
+                color: "#f1f5f9",
+                border: "1px solid #10b981",
+              },
             }
-          });
+          );
         }
-        toast.success('Code executed successfully', {
-          icon: '🚀',
+        toast.success("Code executed successfully", {
+          icon: "🚀",
           style: {
-            background: '#1e293b',
-            color: '#f1f5f9',
-            border: '1px solid #10b981',
-          }
+            background: "#1e293b",
+            color: "#f1f5f9",
+            border: "1px solid #10b981",
+          },
         });
       }
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
-      setExecutionResult(prev => ({ ...prev, error: errorMessage }));
-      toast.error('Execution failed: ' + errorMessage);
+      const errorMessage =
+        err instanceof Error ? err.message : "Unknown error occurred";
+      setExecutionResult((prev) => ({ ...prev, error: errorMessage }));
+      toast.error("Execution failed: " + errorMessage);
     } finally {
       setIsExecuting(false);
     }
@@ -414,7 +419,7 @@ const Playground = () => {
 
   const handleSave = async () => {
     if (!user) {
-      toast.error('Please sign in to save projects');
+      toast.error("Please sign in to save projects");
       return;
     }
 
@@ -422,28 +427,28 @@ const Playground = () => {
     try {
       const { error } = await db.projects.create({
         title: projectTitle,
-        description: 'Created in PyCode Pro Playground',
+        description: "Created in PyCode Pro Playground",
         code,
-        language: 'python',
+        language: "python",
         user_id: user.id,
         is_public: false,
-        tags: ['playground'],
+        tags: ["playground"],
       });
 
       if (error) {
-        toast.error('Failed to save project');
+        toast.error("Failed to save project");
       } else {
-        toast.success('Project saved successfully', {
-          icon: '💾',
+        toast.success("Project saved successfully", {
+          icon: "💾",
           style: {
-            background: '#1e293b',
-            color: '#f1f5f9',
-            border: '1px solid #10b981',
-          }
+            background: "#1e293b",
+            color: "#f1f5f9",
+            border: "1px solid #10b981",
+          },
         });
       }
     } catch (err) {
-      toast.error('Failed to save project');
+      toast.error("Failed to save project");
     } finally {
       setIsSaving(false);
     }
@@ -452,78 +457,78 @@ const Playground = () => {
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(code);
-      toast.success('Code copied to clipboard', {
-        icon: '📋',
+      toast.success("Code copied to clipboard", {
+        icon: "📋",
         style: {
-          background: '#1e293b',
-          color: '#f1f5f9',
-          border: '1px solid #10b981',
-        }
+          background: "#1e293b",
+          color: "#f1f5f9",
+          border: "1px solid #10b981",
+        },
       });
     } catch (err) {
-      toast.error('Failed to copy code');
+      toast.error("Failed to copy code");
     }
   };
 
   const handleDownload = () => {
-    const blob = new Blob([code], { type: 'text/plain' });
+    const blob = new Blob([code], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = `${projectTitle.toLowerCase().replace(/\s+/g, '_')}.py`;
+    a.download = `${projectTitle.toLowerCase().replace(/\s+/g, "_")}.py`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast.success('File downloaded', {
-      icon: '⬇️',
+    toast.success("File downloaded", {
+      icon: "⬇️",
       style: {
-        background: '#1e293b',
-        color: '#f1f5f9',
-        border: '1px solid #10b981',
-      }
+        background: "#1e293b",
+        color: "#f1f5f9",
+        border: "1px solid #10b981",
+      },
     });
   };
 
   const handleSelectExample = (exampleCode) => {
     setCode(exampleCode);
     setExecutionResult({
-      output: '',
-      error: '',
+      output: "",
+      error: "",
       executionTime: 0,
       memoryUsage: 0,
       linesOfCode: 0,
       complexity: 0,
       warnings: [],
-      suggestions: []
+      suggestions: [],
     });
-    toast.success('Example loaded', {
-      icon: '✨',
+    toast.success("Example loaded", {
+      icon: "✨",
       style: {
-        background: '#1e293b',
-        color: '#f1f5f9',
-        border: '1px solid #10b981',
-      }
+        background: "#1e293b",
+        color: "#f1f5f9",
+        border: "1px solid #10b981",
+      },
     });
   };
 
   const handleReset = () => {
     setCode(initialCode);
     setExecutionResult({
-      output: '',
-      error: '',
+      output: "",
+      error: "",
       executionTime: 0,
       memoryUsage: 0,
       linesOfCode: 0,
       complexity: 0,
       warnings: [],
-      suggestions: []
+      suggestions: [],
     });
-    toast.success('Code reset to initial state');
+    toast.success("Code reset to initial state");
   };
 
   const handleInsertCodeFromAI = (code) => {
-    setCode(prevCode => prevCode + '\n\n' + code);
+    setCode((prevCode) => prevCode + "\n\n" + code);
   };
 
   const toggleChatbot = () => {
@@ -549,12 +554,12 @@ const Playground = () => {
           animate={{
             scale: [1, 1.2, 1],
             rotate: [0, 180, 360],
-            opacity: [0.1, 0.2, 0.1]
+            opacity: [0.1, 0.2, 0.1],
           }}
           transition={{
             duration: 20,
             repeat: Infinity,
-            ease: "linear"
+            ease: "linear",
           }}
           className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl"
         />
@@ -562,12 +567,12 @@ const Playground = () => {
           animate={{
             scale: [1.2, 1, 1.2],
             rotate: [360, 180, 0],
-            opacity: [0.1, 0.15, 0.1]
+            opacity: [0.1, 0.15, 0.1],
           }}
           transition={{
             duration: 25,
             repeat: Infinity,
-            ease: "linear"
+            ease: "linear",
           }}
           className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
         />
@@ -575,16 +580,10 @@ const Playground = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <motion.div
-          variants={itemVariants}
-          className="mb-6"
-        >
+        <motion.div variants={itemVariants} className="mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div className="flex-1">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="relative"
-              >
+              <motion.div whileHover={{ scale: 1.02 }} className="relative">
                 <input
                   type="text"
                   value={projectTitle}
@@ -621,41 +620,59 @@ const Playground = () => {
                 disabled={isExecuting}
                 className={`flex items-center space-x-3 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 ${
                   isExecuting
-                    ? 'bg-emerald-600/70 cursor-not-allowed text-sm lg:text-lg'
-                    : 'bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400'
+                    ? "bg-emerald-600/70 cursor-not-allowed text-sm lg:text-lg"
+                    : "bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400"
                 } text-white shadow-2xl`}
               >
                 <motion.div
                   animate={isExecuting ? { rotate: 360 } : { rotate: 0 }}
-                  transition={isExecuting ? { duration: 1, repeat: Infinity, ease: "linear" } : {}}
+                  transition={
+                    isExecuting
+                      ? { duration: 1, repeat: Infinity, ease: "linear" }
+                      : {}
+                  }
                 >
                   <Play className="w-6 h-6" />
                 </motion.div>
-                <span className="hidden sm:inline">{isExecuting ? 'Executing...' : 'Execute Code'}</span>
-                <span className="sm:hidden">{isExecuting ? 'Run...' : 'Run'}</span>
+                <span className="hidden sm:inline">
+                  {isExecuting ? "Executing..." : "Execute Code"}
+                </span>
+                <span className="sm:hidden">
+                  {isExecuting ? "Run..." : "Run"}
+                </span>
               </motion.button>
 
-                {[
-                  { icon: Save, action: handleSave, loading: isSaving, disabled: !user, tooltip: "Save Project" },
-                  { icon: Share2, action: handleShare, tooltip: "Copy Code" },
-                  { icon: Download, action: handleDownload, tooltip: "Download File" },
-                  { icon: RotateCcw, action: handleReset, tooltip: "Reset Code" }
-                ].map((btn, index) => (
-                  <motion.button
-                    key={index}
-                    variants={buttonVariants}
-                    initial="idle"
-                    whileHover="hover"
-                    whileTap="tap"
-                    onClick={btn.action}
-                    disabled={btn.disabled || btn.loading}
-                    className="p-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-xl text-slate-300 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                    title={btn.tooltip}
-                  >
-                    <btn.icon className="w-5 h-5" />
-                  </motion.button>
-                ))}
-              
+              {[
+                {
+                  icon: Save,
+                  action: handleSave,
+                  loading: isSaving,
+                  disabled: !user,
+                  tooltip: "Save Project",
+                },
+                { icon: Share2, action: handleShare, tooltip: "Copy Code" },
+                {
+                  icon: Download,
+                  action: handleDownload,
+                  tooltip: "Download File",
+                },
+                { icon: RotateCcw, action: handleReset, tooltip: "Reset Code" },
+              ].map((btn, index) => (
+                <motion.button
+                  key={index}
+                  variants={buttonVariants}
+                  initial="idle"
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={btn.action}
+                  disabled={btn.disabled || btn.loading}
+                  className="p-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-xl text-slate-300 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  title={btn.tooltip}
+                >
+                  <btn.icon className="w-5 h-5" />
+                </motion.button>
+              ))}
+
               <motion.button
                 variants={buttonVariants}
                 initial="idle"
@@ -676,10 +693,7 @@ const Playground = () => {
         </motion.div>
 
         {/* Quick Start Templates */}
-        <motion.div
-          variants={itemVariants}
-          className="mb-6"
-        >
+        <motion.div variants={itemVariants} className="mb-6">
           <div className="bg-slate-800/30 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
             <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
               <Zap className="w-5 h-5 text-emerald-400" />
@@ -694,21 +708,25 @@ const Playground = () => {
                   onClick={() => {
                     setCode(template.code);
                     setExecutionResult({
-                      output: '',
-                      error: '',
+                      output: "",
+                      error: "",
                       executionTime: 0,
                       memoryUsage: 0,
                       linesOfCode: 0,
                       complexity: 0,
                       warnings: [],
-                      suggestions: []
+                      suggestions: [],
                     });
                     toast.success(`${template.name} loaded!`);
                   }}
                   className="p-4 bg-slate-700/30 hover:bg-slate-600/30 rounded-xl border border-slate-600/30 hover:border-emerald-500/30 transition-all duration-300 text-left group"
                 >
-                  <h4 className="font-medium text-white group-hover:text-emerald-300 transition-colors mb-2">{template.name}</h4>
-                  <p className="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">{template.description}</p>
+                  <h4 className="font-medium text-white group-hover:text-emerald-300 transition-colors mb-2">
+                    {template.name}
+                  </h4>
+                  <p className="text-slate-400 text-sm group-hover:text-slate-300 transition-colors">
+                    {template.description}
+                  </p>
                 </motion.button>
               ))}
             </div>
@@ -734,20 +752,17 @@ const Playground = () => {
         <motion.div
           variants={itemVariants}
           className={`grid gap-6 lg:gap-8 transition-all duration-500 ${
-            isFullscreen ? 'grid-cols-1' : 'lg:grid-cols-2'
+            isFullscreen ? "grid-cols-1" : "lg:grid-cols-2"
           }`}
         >
           {/* Code Editor */}
-          <motion.div
-            layout
-            className="space-y-3 lg:space-y-4"
-          >
+          <motion.div layout className="space-y-3 lg:space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-lg lg:text-xl font-semibold text-white flex items-center space-x-2">
                 <FileText className="w-5 h-5 text-emerald-400" />
                 <span>Code Editor</span>
                 <span className="text-sm text-slate-400 font-normal hidden sm:inline">
-                  ({code.split('\n').length} lines)
+                  ({code.split("\n").length} lines)
                 </span>
               </h2>
               <div className="flex items-center space-x-2">
@@ -760,7 +775,11 @@ const Playground = () => {
                   className="p-2 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg text-slate-300 hover:text-white transition-all duration-300"
                   title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
                 >
-                  {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+                  {isFullscreen ? (
+                    <Minimize2 className="w-4 h-4" />
+                  ) : (
+                    <Maximize2 className="w-4 h-4" />
+                  )}
                 </motion.button>
                 <motion.button
                   variants={buttonVariants}
@@ -775,7 +794,7 @@ const Playground = () => {
                 </motion.button>
               </div>
             </div>
-            
+
             <motion.div
               layout
               className="bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden shadow-2xl relative"
@@ -791,10 +810,7 @@ const Playground = () => {
 
           {/* Output Terminal */}
           {!isFullscreen && (
-            <motion.div
-              layout
-              className="space-y-3 lg:space-y-4"
-            >
+            <motion.div layout className="space-y-3 lg:space-y-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg lg:text-xl font-semibold text-white flex items-center space-x-2">
                   <Zap className="w-5 h-5 text-blue-400" />
@@ -817,16 +833,19 @@ const Playground = () => {
                   <BarChart3 className="w-4 h-4" />
                 </motion.button>
               </div>
-              
+
               {/* Code Stats Overlay */}
               <div className="absolute top-4 right-4 bg-slate-800/80 backdrop-blur-sm rounded-lg px-3 py-1 text-xs text-slate-300 border border-slate-600/50">
                 <div className="flex items-center space-x-4">
-                  <span>Lines: {code.split('\n').length}</span>
+                  <span>Lines: {code.split("\n").length}</span>
                   <span>Chars: {code.length}</span>
-                  <span>Words: {code.split(/\s+/).filter(w => w.length > 0).length}</span>
+                  <span>
+                    Words:{" "}
+                    {code.split(/\s+/).filter((w) => w.length > 0).length}
+                  </span>
                 </div>
               </div>
-              
+
               <motion.div
                 layout
                 className="bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden shadow-2xl"
@@ -856,58 +875,62 @@ const Playground = () => {
                   <span>Code Analytics</span>
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { 
-                  icon: Clock, 
-                  label: 'Execution Time', 
-                  value: `${executionResult.executionTime}ms`,
-                  color: 'text-emerald-400',
-                  bg: 'bg-emerald-500/10',
-                  description: 'How fast your code ran'
-                },
-                { 
-                  icon: Brain, 
-                  label: 'Memory Usage', 
-                  value: `${executionResult.memoryUsage}KB`,
-                  color: 'text-blue-400',
-                  bg: 'bg-blue-500/10',
-                  description: 'Memory consumed'
-                },
-                { 
-                  icon: FileText, 
-                  label: 'Lines of Code', 
-                  value: executionResult.linesOfCode.toString(),
-                  color: 'text-purple-400',
-                  bg: 'bg-purple-500/10',
-                  description: 'Total code lines'
-                },
-                { 
-                  icon: Target, 
-                  label: 'Complexity', 
-                  value: executionResult.complexity.toString(),
-                  color: 'text-orange-400',
-                  bg: 'bg-orange-500/10',
-                  description: 'Code complexity score'
-                }
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  className={`${stat.bg} backdrop-blur-sm rounded-xl p-4 border border-slate-700/30 cursor-help`}
-                  title={stat.description}
-                >
-                  <div className="flex items-center space-x-3">
-                    <stat.icon className={`w-5 h-5 ${stat.color}`} />
-                    <div>
-                      <p className="text-slate-400 text-xs lg:text-sm">{stat.label}</p>
-                      <p className={`font-semibold ${stat.color}`}>{stat.value}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+                  {[
+                    {
+                      icon: Clock,
+                      label: "Execution Time",
+                      value: `${executionResult.executionTime}ms`,
+                      color: "text-emerald-400",
+                      bg: "bg-emerald-500/10",
+                      description: "How fast your code ran",
+                    },
+                    {
+                      icon: Brain,
+                      label: "Memory Usage",
+                      value: `${executionResult.memoryUsage}KB`,
+                      color: "text-blue-400",
+                      bg: "bg-blue-500/10",
+                      description: "Memory consumed",
+                    },
+                    {
+                      icon: FileText,
+                      label: "Lines of Code",
+                      value: executionResult.linesOfCode.toString(),
+                      color: "text-purple-400",
+                      bg: "bg-purple-500/10",
+                      description: "Total code lines",
+                    },
+                    {
+                      icon: Target,
+                      label: "Complexity",
+                      value: executionResult.complexity.toString(),
+                      color: "text-orange-400",
+                      bg: "bg-orange-500/10",
+                      description: "Code complexity score",
+                    },
+                  ].map((stat, index) => (
+                    <motion.div
+                      key={index}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      className={`${stat.bg} backdrop-blur-sm rounded-xl p-4 border border-slate-700/30 cursor-help`}
+                      title={stat.description}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <stat.icon className={`w-5 h-5 ${stat.color}`} />
+                        <div>
+                          <p className="text-slate-400 text-xs lg:text-sm">
+                            {stat.label}
+                          </p>
+                          <p className={`font-semibold ${stat.color}`}>
+                            {stat.value}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-                
+
                 {/* Performance Tips */}
                 <div className="mt-6 p-4 bg-slate-700/30 rounded-xl border border-slate-600/30">
                   <h4 className="text-white font-medium mb-2 flex items-center space-x-2">
@@ -916,16 +939,24 @@ const Playground = () => {
                   </h4>
                   <div className="text-sm text-slate-300 space-y-1">
                     {executionResult.executionTime < 100 && (
-                      <p className="text-green-400">⚡ Excellent execution speed!</p>
+                      <p className="text-green-400">
+                        ⚡ Excellent execution speed!
+                      </p>
                     )}
                     {executionResult.complexity < 5 && (
-                      <p className="text-blue-400">🎯 Clean, simple code structure</p>
+                      <p className="text-blue-400">
+                        🎯 Clean, simple code structure
+                      </p>
                     )}
                     {executionResult.linesOfCode < 50 && (
-                      <p className="text-purple-400">📝 Concise and readable code</p>
+                      <p className="text-purple-400">
+                        📝 Concise and readable code
+                      </p>
                     )}
                     {executionResult.suggestions.length === 0 && (
-                      <p className="text-emerald-400">✨ No optimization suggestions - great job!</p>
+                      <p className="text-emerald-400">
+                        ✨ No optimization suggestions - great job!
+                      </p>
                     )}
                   </div>
                 </div>
@@ -933,7 +964,7 @@ const Playground = () => {
             </motion.div>
           )}
         </AnimatePresence>
-        
+
         {/* Helpful Tips Section */}
         <motion.div
           variants={itemVariants}
@@ -945,7 +976,9 @@ const Playground = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
             <div className="bg-slate-700/30 rounded-lg p-4">
-              <h4 className="text-emerald-400 font-medium mb-2">🚀 Getting Started</h4>
+              <h4 className="text-emerald-400 font-medium mb-2">
+                🚀 Getting Started
+              </h4>
               <ul className="text-slate-300 space-y-1">
                 <li>• Use print() to display output</li>
                 <li>• Variables store data: name = "Alice"</li>
@@ -954,7 +987,9 @@ const Playground = () => {
               </ul>
             </div>
             <div className="bg-slate-700/30 rounded-lg p-4">
-              <h4 className="text-blue-400 font-medium mb-2">🔧 Common Functions</h4>
+              <h4 className="text-blue-400 font-medium mb-2">
+                🔧 Common Functions
+              </h4>
               <ul className="text-slate-300 space-y-1">
                 <li>• len() - get length of lists/strings</li>
                 <li>• range() - create number sequences</li>

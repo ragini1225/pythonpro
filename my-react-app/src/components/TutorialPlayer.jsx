@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Play, 
@@ -26,7 +27,7 @@ import {
 } from 'lucide-react';
 import MonacoEditor from './MonacoEditor';
 import OutputTerminal from './OutputTerminal';
-import { executePythonCode } from '../utils/pythonExecutor';
+import { executePythonCode } from "../utils/pythonExecutor.js";
 import toast from 'react-hot-toast';
 
 const TutorialPlayer = ({ 

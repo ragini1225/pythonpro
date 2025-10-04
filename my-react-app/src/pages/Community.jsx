@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from "react";
+
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Users,
   Star,
@@ -18,26 +19,27 @@ import {
   Play,
   Copy,
   Download,
-} from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import toast from 'react-hot-toast';
-import { useAuth } from '../contexts/AuthContext';
-import { db } from '../lib/database';
+} from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import toast from "react-hot-toast";
+import { useAuth } from "../contexts/AuthContext";
+import { db } from "../lib/database";
 
 const Community = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState('trending');
+  const [activeTab, setActiveTab] = useState("trending");
   const [projects, setProjects] = useState([]);
   const [snippets, setSnippets] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedProject, setSelectedProject] = useState(null);
 
   const mockProjects = [
     {
-      id: '1',
-      title: 'AI-Powered Weather Predictor',
-      description: 'Machine learning model that predicts weather patterns using historical data and real-time APIs',
+      id: "1",
+      title: "AI-Powered Weather Predictor",
+      description:
+        "Machine learning model that predicts weather patterns using historical data and real-time APIs",
       code: `# AI Weather Predictor
 import random
 import datetime
@@ -70,21 +72,22 @@ for day_data in forecast:
     print(f"Day {day_data['day']}: {day_data['temperature']}°C, {day_data['condition']}")
     print(f"   Confidence: {day_data['confidence']:.1%}")
 print(f"\\nModel Accuracy: {predictor.accuracy:.1%}")`,
-      language: 'python',
-      user: { username: 'ai_enthusiast', avatar: '🤖' },
-      tags: ['ai', 'machine-learning', 'weather', 'api'],
+      language: "python",
+      user: { username: "ai_enthusiast", avatar: "🤖" },
+      tags: ["ai", "machine-learning", "weather", "api"],
       star_count: 234,
       fork_count: 67,
       view_count: 1520,
       comment_count: 23,
       is_public: true,
       created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
+      updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     },
     {
-      id: '2',
-      title: 'Cryptocurrency Portfolio Tracker',
-      description: 'Real-time crypto portfolio management with profit/loss calculations and market analysis',
+      id: "2",
+      title: "Cryptocurrency Portfolio Tracker",
+      description:
+        "Real-time crypto portfolio management with profit/loss calculations and market analysis",
       code: `# Crypto Portfolio Tracker
 import random
 from datetime import datetime
@@ -129,21 +132,22 @@ for symbol, holding in portfolio.holdings.items():
 
 total = portfolio.get_portfolio_value(current_prices)
 print("Total Portfolio Value: $" + str(total))`,
-      language: 'python',
-      user: { username: 'crypto_dev', avatar: '₿' },
-      tags: ['cryptocurrency', 'finance', 'portfolio', 'trading'],
+      language: "python",
+      user: { username: "crypto_dev", avatar: "₿" },
+      tags: ["cryptocurrency", "finance", "portfolio", "trading"],
       star_count: 189,
       fork_count: 45,
       view_count: 890,
       comment_count: 31,
       is_public: true,
       created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+      updated_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
     },
     {
-      id: '3',
-      title: 'Social Media Analytics Dashboard',
-      description: 'Analyze social media engagement, track hashtags, and generate insights for content creators',
+      id: "3",
+      title: "Social Media Analytics Dashboard",
+      description:
+        "Analyze social media engagement, track hashtags, and generate insights for content creators",
       code: `# Social Media Analytics
 import random
 from datetime import datetime, timedelta
@@ -180,21 +184,22 @@ for post in analytics.get_top_posts(2):
     content = post['content'][:40]
     engagement = post['engagement']
     print("  " + content + "... (" + str(engagement) + " engagement)")`,
-      language: 'python',
-      user: { username: 'social_guru', avatar: '📱' },
-      tags: ['social-media', 'analytics', 'dashboard', 'data-analysis'],
+      language: "python",
+      user: { username: "social_guru", avatar: "📱" },
+      tags: ["social-media", "analytics", "dashboard", "data-analysis"],
       star_count: 156,
       fork_count: 32,
       view_count: 678,
       comment_count: 18,
       is_public: true,
       created_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString()
+      updated_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
     },
     {
-      id: '4',
-      title: 'Personal Finance Budget Tracker',
-      description: 'Track expenses, set budgets, and get financial insights with beautiful visualizations',
+      id: "4",
+      title: "Personal Finance Budget Tracker",
+      description:
+        "Track expenses, set budgets, and get financial insights with beautiful visualizations",
       code: `# Budget Tracker
 class BudgetTracker:
     def __init__(self):
@@ -230,21 +235,22 @@ spending = tracker.get_category_spending()
 total_expenses = sum(spending.values())
 print("Total Expenses: $" + str(total_expenses))
 print("Remaining: $" + str(5000 - total_expenses))`,
-      language: 'python',
-      user: { username: 'finance_pro', avatar: '💰' },
-      tags: ['finance', 'budgeting', 'personal', 'tracker'],
+      language: "python",
+      user: { username: "finance_pro", avatar: "💰" },
+      tags: ["finance", "budgeting", "personal", "tracker"],
       star_count: 298,
       fork_count: 78,
       view_count: 1890,
       comment_count: 42,
       is_public: true,
       created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
+      updated_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
     },
     {
-      id: '5',
-      title: 'Password Security Analyzer',
-      description: 'Analyze password strength and generate secure passwords with entropy calculations',
+      id: "5",
+      title: "Password Security Analyzer",
+      description:
+        "Analyze password strength and generate secure passwords with entropy calculations",
       code: `# Password Security Analyzer
 import random
 import string
@@ -289,24 +295,25 @@ for pwd in test_passwords:
 
 secure_pwd = analyzer.generate_secure_password(16)
 print("Generated: " + secure_pwd)`,
-      language: 'python',
-      user: { username: 'security_expert', avatar: '🔐' },
-      tags: ['security', 'password', 'encryption', 'cybersecurity'],
+      language: "python",
+      user: { username: "security_expert", avatar: "🔐" },
+      tags: ["security", "password", "encryption", "cybersecurity"],
       star_count: 167,
       fork_count: 29,
       view_count: 543,
       comment_count: 15,
       is_public: true,
       created_at: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
-      updated_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString()
-    }
+      updated_at: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+    },
   ];
 
   const mockSnippets = [
     {
-      id: '1',
-      title: 'Quick Sort Algorithm',
-      description: 'Efficient sorting algorithm with O(n log n) average complexity',
+      id: "1",
+      title: "Quick Sort Algorithm",
+      description:
+        "Efficient sorting algorithm with O(n log n) average complexity",
       code: `def quicksort(arr):
     if len(arr) <= 1:
         return arr
@@ -315,27 +322,27 @@ print("Generated: " + secure_pwd)`,
     middle = [x for x in arr if x == pivot]
     right = [x for x in arr if x > pivot]
     return quicksort(left) + middle + quicksort(right)`,
-      user: { username: 'algo_master', avatar: '⚡' },
-      tags: ['algorithm', 'sorting', 'recursion'],
+      user: { username: "algo_master", avatar: "⚡" },
+      tags: ["algorithm", "sorting", "recursion"],
       likes_count: 89,
       usage_count: 234,
-      created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+      created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
     },
     {
-      id: '2',
-      title: 'Email Validator',
-      description: 'Validate email addresses using regex patterns',
+      id: "2",
+      title: "Email Validator",
+      description: "Validate email addresses using regex patterns",
       code: `import re
 
 def validate_email(email):
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
     return re.match(pattern, email) is not None`,
-      user: { username: 'regex_ninja', avatar: '🥷' },
-      tags: ['validation', 'regex', 'email'],
+      user: { username: "regex_ninja", avatar: "🥷" },
+      tags: ["validation", "regex", "email"],
       likes_count: 67,
       usage_count: 156,
-      created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString()
-    }
+      created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+    },
   ];
 
   useEffect(() => {
@@ -347,72 +354,86 @@ def validate_email(email):
       setProjects(mockProjects);
       setSnippets(mockSnippets);
     } catch (error) {
-      toast.error('Failed to load community data');
+      toast.error("Failed to load community data");
     }
   };
 
   const handleStarProject = async (projectId) => {
     try {
-      setProjects(prev => prev.map(p =>
-        p.id === projectId
-          ? { ...p, star_count: p.star_count + 1 }
-          : p
-      ));
-      toast.success('Project starred!');
+      setProjects((prev) =>
+        prev.map((p) =>
+          p.id === projectId ? { ...p, star_count: p.star_count + 1 } : p
+        )
+      );
+      toast.success("Project starred!");
     } catch (error) {
-      toast.error('Failed to star project');
+      toast.error("Failed to star project");
     }
   };
 
   const handleForkProject = async (projectId) => {
     if (!user) {
-      toast.error('Please sign in to fork projects');
+      toast.error("Please sign in to fork projects");
       return;
     }
 
     try {
-      const project = projects.find(p => p.id === projectId);
+      const project = projects.find((p) => p.id === projectId);
       if (project) {
         const forkedTitle = `${project.title} (Fork)`;
         await db.projects.fork(projectId, forkedTitle);
-        toast.success('Project forked successfully!');
+        toast.success("Project forked successfully!");
       }
     } catch (error) {
-      toast.error('Failed to fork project');
+      toast.error("Failed to fork project");
     }
   };
 
   const handleCopyCode = async (code) => {
     try {
       await navigator.clipboard.writeText(code);
-      toast.success('Code copied to clipboard!');
+      toast.success("Code copied to clipboard!");
     } catch (error) {
-      toast.error('Failed to copy code');
+      toast.error("Failed to copy code");
     }
   };
 
-  const filteredProjects = projects.filter(project => {
-    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesCategory = selectedCategory === 'all' || project.tags.includes(selectedCategory);
+  const filteredProjects = projects.filter((project) => {
+    const matchesSearch =
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.tags.some((tag) =>
+        tag.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    const matchesCategory =
+      selectedCategory === "all" || project.tags.includes(selectedCategory);
     return matchesSearch && matchesCategory;
   });
 
-  const filteredSnippets = snippets.filter(snippet => {
-    const matchesSearch = snippet.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         snippet.description.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredSnippets = snippets.filter((snippet) => {
+    const matchesSearch =
+      snippet.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      snippet.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
 
   const tabs = [
-    { id: 'trending', label: 'Trending', icon: TrendingUp },
-    { id: 'projects', label: 'Projects', icon: Code },
-    { id: 'snippets', label: 'Code Snippets', icon: Zap },
-    { id: 'discussions', label: 'Discussions', icon: MessageCircle }
+    { id: "trending", label: "Trending", icon: TrendingUp },
+    { id: "projects", label: "Projects", icon: Code },
+    { id: "snippets", label: "Code Snippets", icon: Zap },
+    { id: "discussions", label: "Discussions", icon: MessageCircle },
   ];
 
-  const categories = ['all', 'ai', 'web-dev', 'data-science', 'algorithms', 'finance', 'games', 'automation'];
+  const categories = [
+    "all",
+    "ai",
+    "web-dev",
+    "data-science",
+    "algorithms",
+    "finance",
+    "games",
+    "automation",
+  ];
 
   const ProjectCard = ({ project }) => (
     <motion.div
@@ -431,7 +452,9 @@ def validate_email(email):
             <h3 className="font-semibold text-white group-hover:text-emerald-300 transition-colors">
               {project.title}
             </h3>
-            <p className="text-sm text-slate-400">by @{project.user.username}</p>
+            <p className="text-sm text-slate-400">
+              by @{project.user.username}
+            </p>
           </div>
         </div>
         <div className="flex items-center space-x-1">
@@ -482,7 +505,11 @@ def validate_email(email):
             <span>{project.comment_count}</span>
           </div>
         </div>
-        <span>{formatDistanceToNow(new Date(project.updated_at), { addSuffix: true })}</span>
+        <span>
+          {formatDistanceToNow(new Date(project.updated_at), {
+            addSuffix: true,
+          })}
+        </span>
       </div>
     </motion.div>
   );
@@ -544,7 +571,11 @@ def validate_email(email):
             <span>{snippet.usage_count}</span>
           </div>
         </div>
-        <span>{formatDistanceToNow(new Date(snippet.created_at), { addSuffix: true })}</span>
+        <span>
+          {formatDistanceToNow(new Date(snippet.created_at), {
+            addSuffix: true,
+          })}
+        </span>
       </div>
     </motion.div>
   );
@@ -561,7 +592,8 @@ def validate_email(email):
             Python Community
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Discover amazing Python projects, share your code, and learn from fellow developers around the world
+            Discover amazing Python projects, share your code, and learn from
+            fellow developers around the world
           </p>
         </motion.div>
 
@@ -572,10 +604,10 @@ def validate_email(email):
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
         >
           {[
-            { label: 'Active Projects', value: '2.4k', icon: Code },
-            { label: 'Code Snippets', value: '8.7k', icon: Zap },
-            { label: 'Community Members', value: '15.2k', icon: Users },
-            { label: 'Daily Executions', value: '45k', icon: Play }
+            { label: "Active Projects", value: "2.4k", icon: Code },
+            { label: "Code Snippets", value: "8.7k", icon: Zap },
+            { label: "Community Members", value: "15.2k", icon: Users },
+            { label: "Daily Executions", value: "45k", icon: Play },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -607,8 +639,8 @@ def validate_email(email):
                 onClick={() => setActiveTab(tab.id)}
                 className={`px-4 md:px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center space-x-2 ${
                   activeTab === tab.id
-                    ? 'text-white bg-slate-700'
-                    : 'text-slate-400 hover:text-white'
+                    ? "text-white bg-slate-700"
+                    : "text-slate-400 hover:text-white"
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -643,9 +675,11 @@ def validate_email(email):
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="pl-10 pr-8 py-3 bg-slate-800/50 border border-slate-700/50 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 appearance-none"
               >
-                {categories.map(category => (
+                {categories.map((category) => (
                   <option key={category} value={category}>
-                    {category === 'all' ? 'All Categories' : category.charAt(0).toUpperCase() + category.slice(1)}
+                    {category === "all"
+                      ? "All Categories"
+                      : category.charAt(0).toUpperCase() + category.slice(1)}
                   </option>
                 ))}
               </select>
@@ -665,7 +699,7 @@ def validate_email(email):
         </motion.div>
 
         <AnimatePresence mode="wait">
-          {activeTab === 'projects' && (
+          {activeTab === "projects" && (
             <motion.div
               key="projects"
               initial={{ opacity: 0, x: 20 }}
@@ -679,7 +713,7 @@ def validate_email(email):
             </motion.div>
           )}
 
-          {activeTab === 'snippets' && (
+          {activeTab === "snippets" && (
             <motion.div
               key="snippets"
               initial={{ opacity: 0, x: 20 }}
@@ -693,7 +727,7 @@ def validate_email(email):
             </motion.div>
           )}
 
-          {activeTab === 'trending' && (
+          {activeTab === "trending" && (
             <motion.div
               key="trending"
               initial={{ opacity: 0, x: 20 }}
@@ -724,7 +758,7 @@ def validate_email(email):
             </motion.div>
           )}
 
-          {activeTab === 'discussions' && (
+          {activeTab === "discussions" && (
             <motion.div
               key="discussions"
               initial={{ opacity: 0, x: 20 }}
@@ -733,9 +767,12 @@ def validate_email(email):
               className="text-center py-12"
             >
               <MessageCircle className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">Discussions Coming Soon</h3>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                Discussions Coming Soon
+              </h3>
               <p className="text-slate-400 mb-6">
-                Connect with other developers, ask questions, and share knowledge
+                Connect with other developers, ask questions, and share
+                knowledge
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -770,8 +807,12 @@ def validate_email(email):
                       {selectedProject.user.avatar}
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-white">{selectedProject.title}</h2>
-                      <p className="text-slate-400">by @{selectedProject.user.username}</p>
+                      <h2 className="text-2xl font-bold text-white">
+                        {selectedProject.title}
+                      </h2>
+                      <p className="text-slate-400">
+                        by @{selectedProject.user.username}
+                      </p>
                     </div>
                   </div>
                   <button
@@ -782,7 +823,9 @@ def validate_email(email):
                   </button>
                 </div>
 
-                <p className="text-slate-300 mb-6">{selectedProject.description}</p>
+                <p className="text-slate-300 mb-6">
+                  {selectedProject.description}
+                </p>
 
                 <div className="bg-slate-800/50 rounded-xl p-4 mb-6">
                   <pre className="text-sm text-emerald-300 font-mono overflow-x-auto">

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { Terminal, AlertCircle, CheckCircle, Clock, Copy, Maximize2, Lightbulb } from 'lucide-react';
 import toast from 'react-hot-toast';

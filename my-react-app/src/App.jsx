@@ -1,16 +1,21 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import Layout from './components/Layout/Layout';
-import Playground from './pages/Playground';
-import Projects from './pages/Projects';
-import Dashboard from './pages/Dashboard';
-import Community from './pages/Community';
-import Profile from './pages/Profile';
-import Learn from './pages/Learn';
-import Auth from './pages/Auth';
-import Settings from './pages/Settings';
-import TutorialPlayer from './components/TutorialPlayer';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import Layout from "./components/Layout/Layout";
+import Playground from "./pages/Playground";
+import Projects from "./pages/Projects";
+import Dashboard from "./pages/Dashboard";
+import Community from "./pages/Community";
+import Profile from "./pages/Profile";
+import Learn from "./pages/Learn";
+import Auth from "./pages/Auth";
+import Settings from "./pages/Settings";
+import TutorialPlayer from "./components/TutorialPlayer";
 
 // Remove duplicate App and export statements
 

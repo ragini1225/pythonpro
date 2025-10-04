@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Motion, AnimatePresence } from 'framer-motion';
-import { 
-  BookOpen, 
-  Play, 
-  CheckCircle, 
-  Clock, 
-  Award, 
-  Target, 
-  Star, 
-  Users, 
+import React, { useState, useEffect } from "react";
+
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  BookOpen,
+  Play,
+  CheckCircle,
+  Clock,
+  Award,
+  Target,
+  Star,
+  Users,
   TrendingUp,
   Filter,
   Search,
@@ -27,33 +28,34 @@ import {
   Trophy,
   Flame,
   Calendar,
-  BarChart3
-} from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import toast from 'react-hot-toast';
-import { useAuth } from '../contexts/AuthContext';
-import TutorialPlayer from '../components/TutorialPlayer';
+  BarChart3,
+} from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import toast from "react-hot-toast";
+import { useAuth } from "../contexts/AuthContext";
+import TutorialPlayer from "../components/TutorialPlayer";
 
 const Learn = () => {
   const { user } = useAuth();
   const [selectedTutorial, setSelectedTutorial] = useState(null);
   const [completedTutorials, setCompletedTutorials] = useState([]);
-  const [activeTab, setActiveTab] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [activeTab, setActiveTab] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const [showTutorialPlayer, setShowTutorialPlayer] = useState(false);
   const [userProgress, setUserProgress] = useState({
     totalCompleted: 0,
     totalTime: 0,
     currentStreak: 0,
-    level: 'Beginner'
+    level: "Beginner",
   });
 
   const tutorials = [
     {
       id: 1,
       title: "Python Fundamentals: Variables & Data Types",
-      description: "Master the building blocks of Python programming with hands-on exercises and real-world examples",
+      description:
+        "Master the building blocks of Python programming with hands-on exercises and real-world examples",
       duration: 45,
       difficulty: "Beginner",
       category: "Fundamentals",
@@ -62,30 +64,31 @@ const Learn = () => {
       students: 1250,
       lessons: [
         "Understanding Variables",
-        "Numbers and Strings", 
+        "Numbers and Strings",
         "Booleans and None",
         "Type Conversion",
-        "Practice Exercises"
+        "Practice Exercises",
       ],
       prerequisites: [],
       learningObjectives: [
         "Create and use variables effectively",
         "Understand different data types",
         "Convert between data types",
-        "Apply best practices for naming"
+        "Apply best practices for naming",
       ],
-      tags: ['variables', 'data-types', 'basics'],
+      tags: ["variables", "data-types", "basics"],
       estimatedTime: 45,
       completionRate: 89,
       lastUpdated: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-      author: 'Python Foundation',
+      author: "Python Foundation",
       isNew: false,
-      isFeatured: true
+      isFeatured: true,
     },
     {
       id: 2,
       title: "Control Flow: Loops and Conditions",
-      description: "Learn to control program flow with if statements, loops, and logical operators",
+      description:
+        "Learn to control program flow with if statements, loops, and logical operators",
       duration: 60,
       difficulty: "Beginner",
       category: "Control Flow",
@@ -98,27 +101,28 @@ const Learn = () => {
         "For Loops and Range",
         "While Loops",
         "Nested Structures",
-        "Break and Continue"
+        "Break and Continue",
       ],
       prerequisites: ["Python Fundamentals"],
       learningObjectives: [
         "Write conditional statements",
         "Create efficient loops",
         "Handle complex logic",
-        "Avoid infinite loops"
+        "Avoid infinite loops",
       ],
-      tags: ['conditions', 'loops', 'logic'],
+      tags: ["conditions", "loops", "logic"],
       estimatedTime: 60,
       completionRate: 85,
       lastUpdated: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-      author: 'Code Academy',
+      author: "Code Academy",
       isNew: false,
-      isFeatured: true
+      isFeatured: true,
     },
     {
       id: 3,
       title: "Functions and Modules",
-      description: "Create reusable code with functions, understand scope, and work with Python modules",
+      description:
+        "Create reusable code with functions, understand scope, and work with Python modules",
       duration: 75,
       difficulty: "Intermediate",
       category: "Functions",
@@ -131,27 +135,28 @@ const Learn = () => {
         "Return Values",
         "Scope and Local Variables",
         "Lambda Functions",
-        "Modules and Imports"
+        "Modules and Imports",
       ],
       prerequisites: ["Control Flow"],
       learningObjectives: [
         "Write clean, reusable functions",
         "Understand variable scope",
         "Use built-in and custom modules",
-        "Apply functional programming concepts"
+        "Apply functional programming concepts",
       ],
-      tags: ['functions', 'modules', 'scope'],
+      tags: ["functions", "modules", "scope"],
       estimatedTime: 75,
       completionRate: 78,
       lastUpdated: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-      author: 'Advanced Python',
+      author: "Advanced Python",
       isNew: false,
-      isFeatured: false
+      isFeatured: false,
     },
     {
       id: 4,
       title: "Object-Oriented Programming Mastery",
-      description: "Deep dive into OOP concepts: classes, inheritance, polymorphism, and design patterns",
+      description:
+        "Deep dive into OOP concepts: classes, inheritance, polymorphism, and design patterns",
       duration: 120,
       difficulty: "Advanced",
       category: "OOP",
@@ -164,27 +169,28 @@ const Learn = () => {
         "Inheritance",
         "Polymorphism",
         "Encapsulation",
-        "Design Patterns"
+        "Design Patterns",
       ],
       prerequisites: ["Functions and Modules"],
       learningObjectives: [
         "Design object-oriented solutions",
         "Implement inheritance hierarchies",
         "Apply design patterns",
-        "Write maintainable code"
+        "Write maintainable code",
       ],
-      tags: ['oop', 'classes', 'inheritance'],
+      tags: ["oop", "classes", "inheritance"],
       estimatedTime: 120,
       completionRate: 72,
       lastUpdated: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
-      author: 'OOP Expert',
+      author: "OOP Expert",
       isNew: false,
-      isFeatured: false
+      isFeatured: false,
     },
     {
       id: 5,
       title: "Data Science with Python",
-      description: "Analyze data, create visualizations, and build machine learning models",
+      description:
+        "Analyze data, create visualizations, and build machine learning models",
       duration: 180,
       difficulty: "Advanced",
       category: "Data Science",
@@ -197,27 +203,28 @@ const Learn = () => {
         "Data Visualization",
         "Statistical Analysis",
         "Machine Learning Basics",
-        "Real-world Projects"
+        "Real-world Projects",
       ],
       prerequisites: ["OOP", "Functions"],
       learningObjectives: [
         "Manipulate data with Pandas",
         "Create stunning visualizations",
         "Build ML models",
-        "Analyze real datasets"
+        "Analyze real datasets",
       ],
-      tags: ['data-science', 'pandas', 'numpy', 'ml'],
+      tags: ["data-science", "pandas", "numpy", "ml"],
       estimatedTime: 180,
       completionRate: 68,
       lastUpdated: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-      author: 'Data Science Pro',
+      author: "Data Science Pro",
       isNew: true,
-      isFeatured: true
+      isFeatured: true,
     },
     {
       id: 6,
       title: "Web Development with Flask",
-      description: "Build modern web applications using Flask framework with databases and authentication",
+      description:
+        "Build modern web applications using Flask framework with databases and authentication",
       duration: 150,
       difficulty: "Intermediate",
       category: "Web Development",
@@ -230,53 +237,53 @@ const Learn = () => {
         "Forms and Validation",
         "Database Integration",
         "User Authentication",
-        "Deployment"
+        "Deployment",
       ],
       prerequisites: ["Functions and Modules"],
       learningObjectives: [
         "Build web applications",
         "Handle user input securely",
         "Integrate databases",
-        "Deploy to production"
+        "Deploy to production",
       ],
-      tags: ['web-dev', 'flask', 'backend'],
+      tags: ["web-dev", "flask", "backend"],
       estimatedTime: 150,
       completionRate: 75,
       lastUpdated: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000),
-      author: 'Web Dev Master',
+      author: "Web Dev Master",
       isNew: false,
-      isFeatured: false
-    }
+      isFeatured: false,
+    },
   ];
 
   const learningPaths = [
     {
-      id: 'beginner',
-      title: 'Complete Beginner',
-      description: 'Start your Python journey from zero to hero',
-      duration: '8-12 weeks',
+      id: "beginner",
+      title: "Complete Beginner",
+      description: "Start your Python journey from zero to hero",
+      duration: "8-12 weeks",
       tutorials: [1, 2, 3],
-      color: 'emerald',
-      icon: <Lightbulb className="w-8 h-8" />
+      color: "emerald",
+      icon: <Lightbulb className="w-8 h-8" />,
     },
     {
-      id: 'data-science',
-      title: 'Data Science Track',
-      description: 'Become a data scientist with Python',
-      duration: '12-16 weeks',
+      id: "data-science",
+      title: "Data Science Track",
+      description: "Become a data scientist with Python",
+      duration: "12-16 weeks",
       tutorials: [1, 2, 3, 4, 5],
-      color: 'blue',
-      icon: <BarChart3 className="w-8 h-8" />
+      color: "blue",
+      icon: <BarChart3 className="w-8 h-8" />,
     },
     {
-      id: 'web-dev',
-      title: 'Web Development',
-      description: 'Build modern web applications',
-      duration: '10-14 weeks',
+      id: "web-dev",
+      title: "Web Development",
+      description: "Build modern web applications",
+      duration: "10-14 weeks",
       tutorials: [1, 2, 3, 6],
-      color: 'purple',
-      icon: <Globe className="w-8 h-8" />
-    }
+      color: "purple",
+      icon: <Globe className="w-8 h-8" />,
+    },
   ];
 
   useEffect(() => {
@@ -285,7 +292,7 @@ const Learn = () => {
 
   const loadUserProgress = () => {
     // Load user progress from localStorage or database
-    const saved = localStorage.getItem('tutorial_progress');
+    const saved = localStorage.getItem("tutorial_progress");
     if (saved) {
       const progress = JSON.parse(saved);
       setCompletedTutorials(progress.completed || []);
@@ -295,54 +302,63 @@ const Learn = () => {
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty.toLowerCase()) {
-      case 'beginner':
-        return 'text-green-400 bg-green-400/10 border-green-400/20';
-      case 'intermediate':
-        return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
-      case 'advanced':
-        return 'text-red-400 bg-red-400/10 border-red-400/20';
+      case "beginner":
+        return "text-green-400 bg-green-400/10 border-green-400/20";
+      case "intermediate":
+        return "text-yellow-400 bg-yellow-400/10 border-yellow-400/20";
+      case "advanced":
+        return "text-red-400 bg-red-400/10 border-red-400/20";
       default:
-        return 'text-slate-400 bg-slate-400/10 border-slate-400/20';
+        return "text-slate-400 bg-slate-400/10 border-slate-400/20";
     }
   };
 
   const handleStartTutorial = (tutorial) => {
     setSelectedTutorial(tutorial);
     setShowTutorialPlayer(true);
-    toast.success(`Starting: ${tutorial.title}`, { icon: '🚀' });
+    toast.success(`Starting: ${tutorial.title}`, { icon: "🚀" });
   };
 
   const handleCompleteTutorial = (tutorialId) => {
     const newCompleted = [...completedTutorials, tutorialId];
     setCompletedTutorials(newCompleted);
-    
+
     const newProgress = {
       ...userProgress,
       totalCompleted: newCompleted.length,
-      totalTime: userProgress.totalTime + (selectedTutorial?.duration || 0)
+      totalTime: userProgress.totalTime + (selectedTutorial?.duration || 0),
     };
     setUserProgress(newProgress);
-    
+
     // Save progress
-    localStorage.setItem('tutorial_progress', JSON.stringify({
-      completed: newCompleted,
-      stats: newProgress
-    }));
-    
+    localStorage.setItem(
+      "tutorial_progress",
+      JSON.stringify({
+        completed: newCompleted,
+        stats: newProgress,
+      })
+    );
+
     setShowTutorialPlayer(false);
     setSelectedTutorial(null);
-    toast.success('Tutorial completed! 🎉', { icon: '🏆' });
+    toast.success("Tutorial completed! 🎉", { icon: "🏆" });
   };
 
-  const filteredTutorials = tutorials.filter(tutorial => {
-    const matchesSearch = tutorial.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tutorial.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tutorial.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesDifficulty = selectedDifficulty === 'all' || tutorial.difficulty.toLowerCase() === selectedDifficulty;
-    const matchesTab = activeTab === 'all' || 
-                      (activeTab === 'completed' && completedTutorials.includes(tutorial.id)) ||
-                      (activeTab === 'featured' && tutorial.isFeatured) ||
-                      (activeTab === 'new' && tutorial.isNew);
+  const filteredTutorials = tutorials.filter((tutorial) => {
+    const matchesSearch =
+      tutorial.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tutorial.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tutorial.tags.some((tag) =>
+        tag.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    const matchesDifficulty =
+      selectedDifficulty === "all" ||
+      tutorial.difficulty.toLowerCase() === selectedDifficulty;
+    const matchesTab =
+      activeTab === "all" ||
+      (activeTab === "completed" && completedTutorials.includes(tutorial.id)) ||
+      (activeTab === "featured" && tutorial.isFeatured) ||
+      (activeTab === "new" && tutorial.isNew);
     return matchesSearch && matchesDifficulty && matchesTab;
   });
 
@@ -362,7 +378,7 @@ const Learn = () => {
             NEW
           </div>
         )}
-        
+
         {tutorial.isFeatured && (
           <div className="absolute top-4 left-4 text-yellow-400">
             <Star className="w-4 h-4 fill-current" />
@@ -415,7 +431,11 @@ const Learn = () => {
                 <span>{tutorial.rating}</span>
               </div>
             </div>
-            <span className={`px-3 py-1 rounded-full text-xs border capitalize ${getDifficultyColor(tutorial.difficulty)}`}>
+            <span
+              className={`px-3 py-1 rounded-full text-xs border capitalize ${getDifficultyColor(
+                tutorial.difficulty
+              )}`}
+            >
               {tutorial.difficulty}
             </span>
           </div>
@@ -432,10 +452,15 @@ const Learn = () => {
         </div>
 
         <div className="mb-4">
-          <h4 className="text-sm font-medium text-slate-300 mb-2">What you'll learn:</h4>
+          <h4 className="text-sm font-medium text-slate-300 mb-2">
+            What you'll learn:
+          </h4>
           <ul className="space-y-1">
             {tutorial.lessons.slice(0, 3).map((lesson, index) => (
-              <li key={index} className="text-sm text-slate-400 flex items-center">
+              <li
+                key={index}
+                className="text-sm text-slate-400 flex items-center"
+              >
                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full mr-2" />
                 {lesson}
               </li>
@@ -461,7 +486,8 @@ const Learn = () => {
 
         <div className="flex items-center justify-between">
           <div className="text-xs text-slate-500">
-            Updated {formatDistanceToNow(tutorial.lastUpdated, { addSuffix: true })}
+            Updated{" "}
+            {formatDistanceToNow(tutorial.lastUpdated, { addSuffix: true })}
           </div>
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -469,8 +495,8 @@ const Learn = () => {
             onClick={() => handleStartTutorial(tutorial)}
             className={`flex items-center space-x-2 px-6 py-3 rounded-xl font-medium transition-all duration-200 ${
               isCompleted
-                ? 'bg-green-600 hover:bg-green-500 text-white'
-                : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                ? "bg-green-600 hover:bg-green-500 text-white"
+                : "bg-emerald-600 hover:bg-emerald-500 text-white"
             }`}
           >
             {isCompleted ? (
@@ -516,19 +542,30 @@ const Learn = () => {
 
       <div className="space-y-2 mb-4">
         {path.tutorials.map((tutorialId, index) => {
-          const tutorial = tutorials.find(t => t.id === tutorialId);
+          const tutorial = tutorials.find((t) => t.id === tutorialId);
           const isCompleted = completedTutorials.includes(tutorialId);
           return (
-            <div key={tutorialId} className="flex items-center space-x-3 text-sm">
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                isCompleted ? 'bg-green-500 text-white' : 'bg-slate-700 text-slate-400'
-              }`}>
+            <div
+              key={tutorialId}
+              className="flex items-center space-x-3 text-sm"
+            >
+              <div
+                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                  isCompleted
+                    ? "bg-green-500 text-white"
+                    : "bg-slate-700 text-slate-400"
+                }`}
+              >
                 {index + 1}
               </div>
-              <span className={isCompleted ? 'text-green-400' : 'text-slate-300'}>
+              <span
+                className={isCompleted ? "text-green-400" : "text-slate-300"}
+              >
                 {tutorial?.title}
               </span>
-              {isCompleted && <CheckCircle className="w-4 h-4 text-green-400" />}
+              {isCompleted && (
+                <CheckCircle className="w-4 h-4 text-green-400" />
+              )}
             </div>
           );
         })}
@@ -557,8 +594,8 @@ const Learn = () => {
             Learn Python Programming 🐍
           </h1>
           <p className="text-slate-400 text-lg max-w-3xl mx-auto">
-            Master Python through interactive tutorials, hands-on projects, and real-world examples. 
-            From beginner to expert, we've got you covered.
+            Master Python through interactive tutorials, hands-on projects, and
+            real-world examples. From beginner to expert, we've got you covered.
           </p>
         </motion.div>
 
@@ -577,22 +614,48 @@ const Learn = () => {
               </h2>
               <div className="flex items-center space-x-2 text-emerald-400">
                 <Flame className="w-5 h-5" />
-                <span className="font-bold">{userProgress.currentStreak} day streak</span>
+                <span className="font-bold">
+                  {userProgress.currentStreak} day streak
+                </span>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Completed', value: userProgress.totalCompleted, icon: CheckCircle, color: 'green' },
-                { label: 'Hours Learned', value: Math.floor(userProgress.totalTime / 60), icon: Clock, color: 'blue' },
-                { label: 'Current Level', value: userProgress.level, icon: Award, color: 'purple' },
-                { label: 'Streak Days', value: userProgress.currentStreak, icon: Flame, color: 'orange' }
+                {
+                  label: "Completed",
+                  value: userProgress.totalCompleted,
+                  icon: CheckCircle,
+                  color: "green",
+                },
+                {
+                  label: "Hours Learned",
+                  value: Math.floor(userProgress.totalTime / 60),
+                  icon: Clock,
+                  color: "blue",
+                },
+                {
+                  label: "Current Level",
+                  value: userProgress.level,
+                  icon: Award,
+                  color: "purple",
+                },
+                {
+                  label: "Streak Days",
+                  value: userProgress.currentStreak,
+                  icon: Flame,
+                  color: "orange",
+                },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className={`inline-flex p-2 rounded-lg bg-${stat.color}-500/10 text-${stat.color}-400 mb-2`}>
+                  <div
+                    className={`inline-flex p-2 rounded-lg bg-${stat.color}-500/10 text-${stat.color}-400 mb-2`}
+                  >
                     <stat.icon className="w-5 h-5" />
                   </div>
-                  <div className="text-lg font-bold text-white">{stat.value}</div>
+                  <div className="text-lg font-bold text-white">
+                    {stat.value}
+                  </div>
                   <div className="text-sm text-slate-400">{stat.label}</div>
                 </div>
               ))}
@@ -626,18 +689,18 @@ const Learn = () => {
           className="flex items-center space-x-1 mb-6 bg-slate-800/50 rounded-xl p-1"
         >
           {[
-            { id: 'all', label: 'All Tutorials' },
-            { id: 'featured', label: 'Featured' },
-            { id: 'new', label: 'New' },
-            { id: 'completed', label: 'Completed' }
+            { id: "all", label: "All Tutorials" },
+            { id: "featured", label: "Featured" },
+            { id: "new", label: "New" },
+            { id: "completed", label: "Completed" },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`relative px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                 activeTab === tab.id
-                  ? 'text-white bg-slate-700'
-                  : 'text-slate-400 hover:text-white'
+                  ? "text-white bg-slate-700"
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               {tab.label}
@@ -704,8 +767,12 @@ const Learn = () => {
             className="text-center py-12"
           >
             <BookOpen className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">No tutorials found</h3>
-            <p className="text-slate-400">Try adjusting your search terms or filters</p>
+            <h3 className="text-xl font-semibold text-white mb-2">
+              No tutorials found
+            </h3>
+            <p className="text-slate-400">
+              Try adjusting your search terms or filters
+            </p>
           </motion.div>
         )}
 

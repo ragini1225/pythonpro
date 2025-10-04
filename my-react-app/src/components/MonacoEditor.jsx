@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
+
 import Editor from '@monaco-editor/react';
-import { Motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const MonacoEditor = ({
   value,

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Motion } from 'framer-motion';
-import { 
-  User, 
-  Mail, 
-  MapPin, 
-  Link as LinkIcon, 
-  Github, 
+import React, { useState, useEffect } from "react";
+
+import { motion } from "framer-motion";
+import {
+  User,
+  Mail,
+  MapPin,
+  Link as LinkIcon,
+  Github,
   Linkedin,
   Edit3,
   Save,
@@ -16,12 +17,12 @@ import {
   TrendingUp,
   Star,
   GitFork,
-  Activity
-} from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import toast from 'react-hot-toast';
-import { useAuth } from '../contexts/AuthContext';
-import { db } from '../lib/database';
+  Activity,
+} from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import toast from "react-hot-toast";
+import { useAuth } from "../contexts/AuthContext";
+import { db } from "../lib/database";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -30,14 +31,14 @@ const Profile = () => {
   const [achievements, setAchievements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState({
-    username: '',
-    full_name: '',
-    bio: '',
-    location: '',
-    website: '',
-    github_username: '',
-    linkedin_url: '',
-    skill_level: 'beginner',
+    username: "",
+    full_name: "",
+    bio: "",
+    location: "",
+    website: "",
+    github_username: "",
+    linkedin_url: "",
+    skill_level: "beginner",
     public_profile: true,
     email_notifications: true,
   });
@@ -57,25 +58,27 @@ const Profile = () => {
       setProjects(projectsData || []);
 
       // Load user achievements
-      const { data: achievementsData } = await db.achievements.getUserAchievements(user.id);
+      const { data: achievementsData } =
+        await db.achievements.getUserAchievements(user.id);
       setAchievements(achievementsData || []);
 
       // Set profile data from user metadata
       setProfileData({
-        username: user.user_metadata?.username || user.email?.split('@')[0] || '',
-        full_name: user.user_metadata?.full_name || '',
-        bio: user.user_metadata?.bio || '',
-        location: user.user_metadata?.location || '',
-        website: user.user_metadata?.website || '',
-        github_username: user.user_metadata?.github_username || '',
-        linkedin_url: user.user_metadata?.linkedin_url || '',
-        skill_level: user.user_metadata?.skill_level || 'beginner',
+        username:
+          user.user_metadata?.username || user.email?.split("@")[0] || "",
+        full_name: user.user_metadata?.full_name || "",
+        bio: user.user_metadata?.bio || "",
+        location: user.user_metadata?.location || "",
+        website: user.user_metadata?.website || "",
+        github_username: user.user_metadata?.github_username || "",
+        linkedin_url: user.user_metadata?.linkedin_url || "",
+        skill_level: user.user_metadata?.skill_level || "beginner",
         public_profile: user.user_metadata?.public_profile ?? true,
         email_notifications: user.user_metadata?.email_notifications ?? true,
       });
     } catch (error) {
-      console.error('Failed to load profile data:', error);
-      toast.error('Failed to load profile data');
+      console.error("Failed to load profile data:", error);
+      toast.error("Failed to load profile data");
     } finally {
       setLoading(false);
     }
@@ -87,46 +90,46 @@ const Profile = () => {
     try {
       // Update user metadata in Supabase Auth
       const { error } = await supabase.auth.updateUser({
-        data: profileData
+        data: profileData,
       });
 
       if (error) throw error;
 
-      toast.success('Profile updated successfully!');
+      toast.success("Profile updated successfully!");
       setIsEditing(false);
     } catch (error) {
-      console.error('Failed to update profile:', error);
-      toast.error('Failed to update profile');
+      console.error("Failed to update profile:", error);
+      toast.error("Failed to update profile");
     }
   };
 
   const getSkillLevelColor = (level) => {
     switch (level) {
-      case 'beginner':
-        return 'text-green-400 bg-green-400/10 border-green-400/20';
-      case 'intermediate':
-        return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
-      case 'advanced':
-        return 'text-orange-400 bg-orange-400/10 border-orange-400/20';
-      case 'expert':
-        return 'text-red-400 bg-red-400/10 border-red-400/20';
+      case "beginner":
+        return "text-green-400 bg-green-400/10 border-green-400/20";
+      case "intermediate":
+        return "text-yellow-400 bg-yellow-400/10 border-yellow-400/20";
+      case "advanced":
+        return "text-orange-400 bg-orange-400/10 border-orange-400/20";
+      case "expert":
+        return "text-red-400 bg-red-400/10 border-red-400/20";
       default:
-        return 'text-slate-400 bg-slate-400/10 border-slate-400/20';
+        return "text-slate-400 bg-slate-400/10 border-slate-400/20";
     }
   };
 
   const getRarityColor = (rarity) => {
     switch (rarity) {
-      case 'common':
-        return 'text-gray-400';
-      case 'rare':
-        return 'text-blue-400';
-      case 'epic':
-        return 'text-purple-400';
-      case 'legendary':
-        return 'text-yellow-400';
+      case "common":
+        return "text-gray-400";
+      case "rare":
+        return "text-blue-400";
+      case "epic":
+        return "text-purple-400";
+      case "legendary":
+        return "text-yellow-400";
       default:
-        return 'text-gray-400';
+        return "text-gray-400";
     }
   };
 
@@ -134,7 +137,9 @@ const Profile = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Please sign in to view your profile</h2>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Please sign in to view your profile
+          </h2>
         </div>
       </div>
     );
@@ -148,9 +153,18 @@ const Profile = () => {
     );
   }
 
-  const totalStars = projects.reduce((sum, project) => sum + project.star_count, 0);
-  const totalForks = projects.reduce((sum, project) => sum + project.fork_count, 0);
-  const totalPoints = achievements.reduce((sum, ua) => sum + (ua.achievement?.points || 0), 0);
+  const totalStars = projects.reduce(
+    (sum, project) => sum + project.star_count,
+    0
+  );
+  const totalForks = projects.reduce(
+    (sum, project) => sum + project.fork_count,
+    0
+  );
+  const totalPoints = achievements.reduce(
+    (sum, ua) => sum + (ua.achievement?.points || 0),
+    0
+  );
 
   return (
     <div className="min-h-screen pt-8 pb-16">
@@ -178,20 +192,32 @@ const Profile = () => {
                     <input
                       type="text"
                       value={profileData.username}
-                      onChange={(e) => setProfileData({ ...profileData, username: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({
+                          ...profileData,
+                          username: e.target.value,
+                        })
+                      }
                       className="text-2xl font-bold bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-white w-full"
                       placeholder="Username"
                     />
                     <input
                       type="text"
                       value={profileData.full_name}
-                      onChange={(e) => setProfileData({ ...profileData, full_name: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({
+                          ...profileData,
+                          full_name: e.target.value,
+                        })
+                      }
                       className="text-lg bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-slate-300 w-full"
                       placeholder="Full Name"
                     />
                     <textarea
                       value={profileData.bio}
-                      onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
+                      onChange={(e) =>
+                        setProfileData({ ...profileData, bio: e.target.value })
+                      }
                       className="bg-slate-700/50 border border-slate-600 rounded-lg px-3 py-2 text-slate-400 w-full resize-none"
                       rows={3}
                       placeholder="Tell us about yourself..."
@@ -227,19 +253,33 @@ const Profile = () => {
                   {profileData.website && (
                     <div className="flex items-center space-x-1">
                       <LinkIcon className="w-4 h-4" />
-                      <a href={profileData.website} target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">
+                      <a
+                        href={profileData.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-emerald-400 transition-colors"
+                      >
                         {profileData.website}
                       </a>
                     </div>
                   )}
                   <div className="flex items-center space-x-1">
                     <Calendar className="w-4 h-4" />
-                    <span>Joined {formatDistanceToNow(new Date(user.created_at), { addSuffix: true })}</span>
+                    <span>
+                      Joined{" "}
+                      {formatDistanceToNow(new Date(user.created_at), {
+                        addSuffix: true,
+                      })}
+                    </span>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-4 mt-4">
-                  <span className={`px-3 py-1 rounded-full text-sm border capitalize ${getSkillLevelColor(profileData.skill_level)}`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm border capitalize ${getSkillLevelColor(
+                      profileData.skill_level
+                    )}`}
+                  >
                     {profileData.skill_level}
                   </span>
                   {profileData.github_username && (
@@ -311,10 +351,30 @@ const Profile = () => {
           className="grid grid-cols-1 sm:grid-cols-4 gap-6 mb-8"
         >
           {[
-            { label: 'Projects', value: projects.length, icon: Code, color: 'emerald' },
-            { label: 'Total Stars', value: totalStars, icon: Star, color: 'yellow' },
-            { label: 'Total Forks', value: totalForks, icon: GitFork, color: 'blue' },
-            { label: 'Achievement Points', value: totalPoints, icon: Award, color: 'purple' },
+            {
+              label: "Projects",
+              value: projects.length,
+              icon: Code,
+              color: "emerald",
+            },
+            {
+              label: "Total Stars",
+              value: totalStars,
+              icon: Star,
+              color: "yellow",
+            },
+            {
+              label: "Total Forks",
+              value: totalForks,
+              icon: GitFork,
+              color: "blue",
+            },
+            {
+              label: "Achievement Points",
+              value: totalPoints,
+              icon: Award,
+              color: "purple",
+            },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -323,10 +383,14 @@ const Profile = () => {
               transition={{ delay: 0.1 + index * 0.1 }}
               className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6 text-center"
             >
-              <div className={`inline-flex p-3 rounded-xl bg-${stat.color}-500/10 text-${stat.color}-400 mb-3`}>
+              <div
+                className={`inline-flex p-3 rounded-xl bg-${stat.color}-500/10 text-${stat.color}-400 mb-3`}
+              >
                 <stat.icon className="w-6 h-6" />
               </div>
-              <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+              <div className="text-2xl font-bold text-white mb-1">
+                {stat.value}
+              </div>
               <div className="text-sm text-slate-400">{stat.label}</div>
             </motion.div>
           ))}
@@ -342,7 +406,9 @@ const Profile = () => {
           >
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-white">Recent Projects</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Recent Projects
+                </h3>
                 <TrendingUp className="w-5 h-5 text-emerald-400" />
               </div>
 
@@ -359,7 +425,9 @@ const Profile = () => {
                         <Code className="w-4 h-4" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-white">{project.title}</h4>
+                        <h4 className="font-medium text-white">
+                          {project.title}
+                        </h4>
                         <p className="text-sm text-slate-400 line-clamp-1">
                           {project.description}
                         </p>
@@ -374,7 +442,11 @@ const Profile = () => {
                         <GitFork className="w-3 h-3" />
                         <span>{project.fork_count}</span>
                       </div>
-                      <span>{formatDistanceToNow(new Date(project.updated_at), { addSuffix: true })}</span>
+                      <span>
+                        {formatDistanceToNow(new Date(project.updated_at), {
+                          addSuffix: true,
+                        })}
+                      </span>
                     </div>
                   </motion.div>
                 ))}
@@ -390,7 +462,9 @@ const Profile = () => {
           >
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-white">Achievements</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Achievements
+                </h3>
                 <Award className="w-5 h-5 text-emerald-400" />
               </div>
 
@@ -403,7 +477,7 @@ const Profile = () => {
                     className="flex items-center space-x-3 p-3 bg-slate-700/30 rounded-lg"
                   >
                     <div className="text-2xl">
-                      {userAchievement.achievement?.icon || '🏆'}
+                      {userAchievement.achievement?.icon || "🏆"}
                     </div>
                     <div className="flex-1">
                       <h4 className="font-medium text-white text-sm">
@@ -413,7 +487,11 @@ const Profile = () => {
                         <span className="text-xs text-slate-400">
                           {userAchievement.achievement?.points} points
                         </span>
-                        <span className={`text-xs capitalize ${getRarityColor(userAchievement.achievement?.rarity || 'common')}`}>
+                        <span
+                          className={`text-xs capitalize ${getRarityColor(
+                            userAchievement.achievement?.rarity || "common"
+                          )}`}
+                        >
                           {userAchievement.achievement?.rarity}
                         </span>
                       </div>
@@ -426,7 +504,9 @@ const Profile = () => {
                 <div className="text-center py-8">
                   <Award className="w-12 h-12 text-slate-600 mx-auto mb-4" />
                   <p className="text-slate-400">No achievements yet</p>
-                  <p className="text-sm text-slate-500">Start coding to earn your first achievement!</p>
+                  <p className="text-sm text-slate-500">
+                    Start coding to earn your first achievement!
+                  </p>
                 </div>
               )}
             </div>

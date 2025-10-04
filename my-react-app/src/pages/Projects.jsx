@@ -1,19 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { Motion } from 'framer-motion';
-import { Plus, Search, Filter, Calendar, Code, Lock, Globe, Trash2, Edit3 } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
-import toast from 'react-hot-toast';
-import { useAuth } from '../contexts/AuthContext';
-import { db } from '../lib/database';
+import React, { useState, useEffect } from "react";
+
+import { motion } from "framer-motion";
+import {
+  Plus,
+  Search,
+  Filter,
+  Calendar,
+  Code,
+  Lock,
+  Globe,
+  Trash2,
+  Edit3,
+} from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import toast from "react-hot-toast";
+import { useAuth } from "../contexts/AuthContext";
+import { db } from "../lib/database";
 
 const Projects = () => {
   const { user } = useAuth();
   const [projects, setProjects] = useState([]);
   const [publicProjects, setPublicProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState('all');
-  const [activeTab, setActiveTab] = useState('my-projects');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [activeTab, setActiveTab] = useState("my-projects");
 
   useEffect(() => {
     loadProjects();
@@ -23,47 +34,52 @@ const Projects = () => {
     setLoading(true);
     try {
       if (user) {
-        const { data: userProjects, error: userError } = await db.projects.getByUserId(user.id);
+        const { data: userProjects, error: userError } =
+          await db.projects.getByUserId(user.id);
         if (userError) throw userError;
         setProjects(userProjects || []);
       }
 
-      const { data: publicData, error: publicError } = await db.projects.getPublic();
+      const { data: publicData, error: publicError } =
+        await db.projects.getPublic();
       if (publicError) throw publicError;
       setPublicProjects(publicData || []);
     } catch (error) {
-      toast.error('Failed to load projects');
+      toast.error("Failed to load projects");
     } finally {
       setLoading(false);
     }
   };
 
   const handleDeleteProject = async (projectId) => {
-    if (!confirm('Are you sure you want to delete this project?')) return;
+    if (!confirm("Are you sure you want to delete this project?")) return;
 
     try {
       const { error } = await db.projects.delete(projectId);
       if (error) throw error;
-      
-      setProjects(projects.filter(p => p.id !== projectId));
-      toast.success('Project deleted successfully');
+
+      setProjects(projects.filter((p) => p.id !== projectId));
+      toast.success("Project deleted successfully");
     } catch (error) {
-      toast.error('Failed to delete project');
+      toast.error("Failed to delete project");
     }
   };
 
-  const filteredProjects = projects.filter(project => {
-    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filter === 'all' || 
-                         (filter === 'private' && !project.is_public) ||
-                         (filter === 'public' && project.is_public);
+  const filteredProjects = projects.filter((project) => {
+    const matchesSearch =
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter =
+      filter === "all" ||
+      (filter === "private" && !project.is_public) ||
+      (filter === "public" && project.is_public);
     return matchesSearch && matchesFilter;
   });
 
-  const filteredPublicProjects = publicProjects.filter(project =>
-    project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    project.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPublicProjects = publicProjects.filter(
+    (project) =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const ProjectCard = ({ project, showActions = false }) => (
@@ -116,7 +132,11 @@ const Projects = () => {
           </div>
           <div className="flex items-center space-x-1">
             <Calendar className="w-4 h-4" />
-            <span>{formatDistanceToNow(new Date(project.updated_at), { addSuffix: true })}</span>
+            <span>
+              {formatDistanceToNow(new Date(project.updated_at), {
+                addSuffix: true,
+              })}
+            </span>
           </div>
         </div>
         {project.user && (
@@ -145,8 +165,12 @@ const Projects = () => {
           animate={{ opacity: 1, scale: 1 }}
           className="text-center"
         >
-          <h2 className="text-2xl font-bold text-white mb-4">Sign in to view projects</h2>
-          <p className="text-slate-400 mb-6">Create an account to save and manage your Python projects</p>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Sign in to view projects
+          </h2>
+          <p className="text-slate-400 mb-6">
+            Create an account to save and manage your Python projects
+          </p>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -169,7 +193,9 @@ const Projects = () => {
           className="mb-8"
         >
           <h1 className="text-3xl font-bold text-white mb-2">Projects</h1>
-          <p className="text-slate-400">Manage your Python projects and explore the community</p>
+          <p className="text-slate-400">
+            Manage your Python projects and explore the community
+          </p>
         </motion.div>
 
         {/* Tabs */}
@@ -180,16 +206,16 @@ const Projects = () => {
           className="flex items-center space-x-1 mb-6 bg-slate-800/50 rounded-xl p-1"
         >
           {[
-            { id: 'my-projects', label: 'My Projects' },
-            { id: 'explore', label: 'Explore' },
+            { id: "my-projects", label: "My Projects" },
+            { id: "explore", label: "Explore" },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`relative px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
                 activeTab === tab.id
-                  ? 'text-white bg-slate-700'
-                  : 'text-slate-400 hover:text-white'
+                  ? "text-white bg-slate-700"
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               {tab.label}
@@ -222,7 +248,7 @@ const Projects = () => {
             />
           </div>
 
-          {activeTab === 'my-projects' && (
+          {activeTab === "my-projects" && (
             <div className="flex items-center space-x-3">
               <div className="relative">
                 <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -270,7 +296,7 @@ const Projects = () => {
             transition={{ delay: 0.3 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {activeTab === 'my-projects' ? (
+            {activeTab === "my-projects" ? (
               filteredProjects.length > 0 ? (
                 filteredProjects.map((project) => (
                   <ProjectCard
@@ -282,9 +308,13 @@ const Projects = () => {
               ) : (
                 <div className="col-span-full text-center py-12">
                   <Code className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-2">No projects found</h3>
+                  <h3 className="text-xl font-semibold text-white mb-2">
+                    No projects found
+                  </h3>
                   <p className="text-slate-400 mb-6">
-                    {searchTerm ? 'Try adjusting your search terms' : 'Create your first project to get started'}
+                    {searchTerm
+                      ? "Try adjusting your search terms"
+                      : "Create your first project to get started"}
                   </p>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -295,22 +325,24 @@ const Projects = () => {
                   </motion.button>
                 </div>
               )
+            ) : filteredPublicProjects.length > 0 ? (
+              filteredPublicProjects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  showActions={false}
+                />
+              ))
             ) : (
-              filteredPublicProjects.length > 0 ? (
-                filteredPublicProjects.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    project={project}
-                    showActions={false}
-                  />
-                ))
-              ) : (
-                <div className="col-span-full text-center py-12">
-                  <Globe className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white mb-2">No public projects found</h3>
-                  <p className="text-slate-400">Try adjusting your search terms</p>
-                </div>
-              )
+              <div className="col-span-full text-center py-12">
+                <Globe className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  No public projects found
+                </h3>
+                <p className="text-slate-400">
+                  Try adjusting your search terms
+                </p>
+              </div>
             )}
           </motion.div>
         )}

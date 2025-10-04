@@ -1,5 +1,6 @@
 import React from 'react';
-import { Motion } from 'framer-motion';
+
+import { motion } from 'framer-motion';
 import { Code2, Sparkles, Zap, Cpu, BookOpen, TrendingUp, Target, Lightbulb, Brain, RotateCcw } from 'lucide-react';
 
 const examples = [
