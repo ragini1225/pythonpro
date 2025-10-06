@@ -18,6 +18,7 @@ import {
   Star,
   GitFork,
   Activity,
+  Bot,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import toast from "react-hot-toast";

@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-
-import { AnimatePresence } from 'framer-motion';
-import { 
-  Bot, 
-  Send, 
-  X, 
-  Minimize2, 
-  Maximize2, 
-  Copy, 
-  ThumbsUp, 
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Bot,
+  Send,
+  X,
+  Minimize2,
+  Maximize2,
+  Copy,
+  ThumbsUp,
   ThumbsDown,
   Sparkles,
   Code,
@@ -17,7 +16,10 @@ import {
   MessageCircle,
   RefreshCw,
   Download,
-  Share2
+  Share2,
+  Target,
+  BookOpen,
+  Brain
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -43,12 +45,14 @@ const AIChatbot = ({ onInsertCode, isMinimized, onToggleMinimize }) => {
   const inputRef = useRef(null);
 
   const quickActions = [
-    { text: "Explain this code", icon: <Lightbulb className="w-4 h-4" /> },
-    { text: "Find bugs", icon: <Code className="w-4 h-4" /> },
-    { text: "Optimize performance", icon: <Zap className="w-4 h-4" /> },
-    { text: "Add comments", icon: <MessageCircle className="w-4 h-4" /> },
-    { text: "Write tests", icon: <Bot className="w-4 h-4" /> },
-    { text: "Refactor code", icon: <RefreshCw className="w-4 h-4" /> }
+    { text: "Explain this code", icon: <Lightbulb className="w-4 h-4" />, category: "help" },
+    { text: "Find bugs", icon: <Code className="w-4 h-4" />, category: "debug" },
+    { text: "Optimize performance", icon: <Zap className="w-4 h-4" />, category: "optimize" },
+    { text: "Add comments", icon: <MessageCircle className="w-4 h-4" />, category: "improve" },
+    { text: "Write tests", icon: <Target className="w-4 h-4" />, category: "test" },
+    { text: "Refactor code", icon: <RefreshCw className="w-4 h-4" />, category: "refactor" },
+    { text: "Learn Python basics", icon: <BookOpen className="w-4 h-4" />, category: "learn" },
+    { text: "Algorithm help", icon: <Brain className="w-4 h-4" />, category: "algorithm" }
   ];
 
   const aiResponses = [
@@ -309,7 +313,7 @@ print("\\n💡 This analysis helps you understand your data patterns!")`
     try {
       await navigator.clipboard.writeText(code);
       toast.success('Code copied to clipboard!', { icon: '📋' });
-    } catch {
+    } catch (error) {
       toast.error('Failed to copy code');
     }
   };
