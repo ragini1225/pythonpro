@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -29,6 +30,7 @@ const Navbar = () => {
     { name: 'Projects', href: '/projects', icon: FolderOpen },
     { name: 'Community', href: '/community', icon: Users },
     { name: 'Learn', href: '/learn', icon: BookOpen },
+   
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -45,6 +47,7 @@ const Navbar = () => {
               whileTap={{ scale: 0.95 }}
             >
               <Zap className="w-6 h-6 text-white" />
+              
             </motion.div>
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors">
@@ -88,11 +91,11 @@ const Navbar = () => {
             {!user && (
               <div className="hidden sm:flex items-center space-x-2 px-3 py-1 rounded-lg bg-slate-800/50 border border-slate-700/50">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-                <span className="text-xs text-slate-400">Supabase Ready</span>
+          
               </div>
             )}
             
-            {user ? (
+            {user ? ( 
               <div className="flex items-center space-x-3">
                 <div className="hidden sm:block text-right">
                   <p className="text-sm font-medium text-white">

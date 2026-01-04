@@ -669,7 +669,7 @@ const Playground = () => {
                 className="flex items-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl text-white font-medium transition-all duration-300 shadow-lg"
                 title="AI Assistant"
               >
-                <Bot className="w-5 h-5" />
+                <Bot className="w-9 h-5" />
                 <span className="hidden lg:inline">AI Help</span>
               </motion.button>
             </div>
@@ -820,7 +820,7 @@ const Playground = () => {
               </div>
               
               {/* Code Stats Overlay */}
-              <div className="absolute top-12 right-12 bg-slate-800/80 backdrop-blur-sm rounded-lg px-4 py-3 text-xs text-slate-400 border border-slate-600/50">
+              <div className="absolute top-1 right-1 bg-slate-800/80 backdrop-blur-sm rounded-lg px-3py-1 text-xs text-slate-300 border border-slate-600/50">
                 <div className="flex items-center space-x-4">
                   <span>Lines: {code.split('\n').length}</span>
                   <span>Chars: {code.length}</span>
